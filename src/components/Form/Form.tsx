@@ -1,21 +1,43 @@
+import { formatNumber } from 'helpers'
 import style from './styles.module.css'
+import { ChangeEventHandler, FormEventHandler, useState } from 'react'
 
-export const Form = () => {
+export const Form = ({ onFormSubmit, isPending }: { onFormSubmit: any; isPending: boolean }) => {
+  const [email, setEmail] = useState('')
+  const [number, setNumber] = useState('')
+
+  const handleNumberChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const inputValue = event.target.value
+    const formattedValue = formatNumber(inputValue)
+    setNumber(formattedValue)
+  }
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault()
+    console.log('submit')
+    onFormSubmit(email, number)
+  }
+
   return (
-    <div>
-      <form className={style.form}>
-        <div className={style.inputWrapper}>
-          <label htmlFor='email'>Email</label>
-          <input type='email' id='email' placeholder='john@gmail.com' />
-        </div>
-        <div className={style.inputWrapper}>
-          <label htmlFor='number'>Number</label>
-          <input type='number' id='number' placeholder='221122' />
-        </div>
-        <button type='button' className={style.button}>
-          Send Request
-        </button>
-      </form>
-    </div>
+    <form className={style.form} onSubmit={handleSubmit}>
+      <div className={style.inputWrapper}>
+        <label htmlFor='email'>Email</label>
+        <input
+          required
+          type='email'
+          id='email'
+          placeholder='john@gmail.com'
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
+      </div>
+      <div className={style.inputWrapper}>
+        <label htmlFor='number'>Number</label>
+        <input maxLength={8} type='text' id='number' placeholder='22-11-22' value={number} onChange={handleNumberChange} />
+      </div>
+      <button type='submit' className={style.button} disabled={isPending}>
+        {isPending ? 'Sending...' : 'Send Request'}
+      </button>
+    </form>
   )
 }
