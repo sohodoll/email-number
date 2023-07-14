@@ -7,7 +7,7 @@
 
 ## Deploy
 
-- Deploy link: https://github.com/sohodoll/node-mock
+- Deploy link: https://mockusers.netlify.app/
 - Development branch: https://github.com/sohodoll/email-number/tree/develop
 
 ## Coming Soon
