@@ -11,9 +11,15 @@ export const Main = () => {
   const onFormSubmit = useCallback(async (email: string, number: string) => {
     setUsers([])
     setIsPending(true)
-    const users = await getUsers(email, number.replaceAll('-', ''))
-    setUsers(users)
-    setIsPending(false)
+
+    try {
+      const users = await getUsers(email, number.replaceAll('-', ''))
+      setUsers(users)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsPending(false)
+    }
   }, [])
 
   return (
