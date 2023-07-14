@@ -1,22 +1,24 @@
 import { formatNumber } from 'helpers'
 import style from './styles.module.css'
-import { ChangeEventHandler, FormEventHandler, useState } from 'react'
+import { ChangeEventHandler, FormEventHandler, useCallback, useState } from 'react'
 
 export const Form = ({ onFormSubmit, isPending }: { onFormSubmit: any; isPending: boolean }) => {
   const [email, setEmail] = useState('')
   const [number, setNumber] = useState('')
 
-  const handleNumberChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+  const handleNumberChange: ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const inputValue = event.target.value
     const formattedValue = formatNumber(inputValue)
     setNumber(formattedValue)
-  }
+  }, [])
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault()
-    console.log('submit')
-    onFormSubmit(email, number)
-  }
+  const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+    (event) => {
+      event.preventDefault()
+      onFormSubmit(email, number)
+    },
+    [email, number, onFormSubmit]
+  )
 
   return (
     <form className={style.form} onSubmit={handleSubmit}>
